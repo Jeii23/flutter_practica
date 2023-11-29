@@ -1,26 +1,24 @@
+import 'package:exercise_flutter_acs/info_groups.dart';
 import 'package:flutter/material.dart';
-
 import 'data.dart';
-import 'the_drawer.dart';
 import 'screen_group.dart';
+import 'info.dart';
+class UserGroupsInfo extends StatefulWidget {
+  final UserGroup userGroup;
 
-
-class ScreenListGroups extends StatefulWidget {
-  List<UserGroup> userGroups;
-
-  ScreenListGroups({super.key, required this.userGroups});
+  UserGroupsInfo({Key? key, required this.userGroup}) : super(key: key);
 
   @override
-  State<ScreenListGroups> createState() => _ScreenListGroupsState();
+  _UserGroupsInfoState createState() => _UserGroupsInfoState();
 }
 
-class _ScreenListGroupsState extends State<ScreenListGroups> {
-  late List<UserGroup> userGroups;
+class _UserGroupsInfoState extends State<UserGroupsInfo> {
+  late UserGroup userGroup;
 
   @override
   void initState() {
     super.initState();
-    userGroups = widget.userGroups; // the userGroups of ScreenListGroups
+    userGroup = widget.userGroup;
   }
 
   @override
@@ -30,17 +28,14 @@ class _ScreenListGroupsState extends State<ScreenListGroups> {
         child: const Icon(Icons.add),
         onPressed: () {
           // TODO: assign names like New group 1, New group 2...
-          UserGroup newUserGroup = UserGroup(
+          User newUser = User(
               Data.defaultName,
               Data.defaultDescription,
-              Data.defaultAreas,
-              Data.defaultSchedule,
-              Data.defaultActions, <User>[]);
-          userGroups.add(newUserGroup);
+            );
+          userGroup.users.add(newUser);
           setState(() {});
         },
       ),
-      drawer: TheDrawer(context).drawer,
       appBar: AppBar(
         backgroundColor: Theme
             .of(context)
@@ -50,31 +45,30 @@ class _ScreenListGroupsState extends State<ScreenListGroups> {
             .of(context)
             .colorScheme
             .onPrimary,
-        title: const Text("User groups"),
+        title:  Text('Users of ' + userGroup.name),
       ),
       body: ListView.separated(
         // it's like ListView.builder() but better
         // because it includes a separator between items
         padding: const EdgeInsets.all(16.0),
-        itemCount: userGroups.length,
+        itemCount: userGroup.users.length,
         itemBuilder: (BuildContext context, int index) =>
-            _buildRow(userGroups[index], index),
+            _buildRow(userGroup.users[index], index),
         separatorBuilder: (BuildContext context, int index) => const Divider(),
       ),
     );
   }
 
-  Widget _buildRow(UserGroup userGroup, int index) {
+  Widget _buildRow(User user, int index) {
     return ListTile(
-      title: Text(userGroup.name),
-      trailing: Text('${userGroup.users.length}'),
+      title: Text(user.name),
+      trailing: Text('${user.credential}'),
       onTap: () =>
           Navigator.of(context)
               .push(MaterialPageRoute<void>(
-              builder: (context) => ScreenGroup(userGroup: userGroup)),
+              builder: (context) => InfoGroups(user: user)),
           )
               .then((var v) => setState(() {})),
     );
   }
 }
-
