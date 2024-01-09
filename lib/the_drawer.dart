@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'screen_partition.dart';
 import 'data.dart';
 import 'package:exercise_flutter_acs/groups/screen_list_groups.dart';
-import 'package:exercise_flutter_acs/places';
 class TheDrawer {
   late Drawer drawer;
 
@@ -25,8 +24,7 @@ class TheDrawer {
             onTap: () {
               Navigator.of(context).pop(); // close drawer
               Navigator.of(context).push(MaterialPageRoute<void>(
-                builder: (context) => ScreenListGroups(userGroups: Data.userGroups),
-              ));
+                builder: (context) => ScreenPartition()));
             },          ),
           ListTile(
             leading: const Icon(Icons.group),

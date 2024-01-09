@@ -18,7 +18,10 @@ class _ScreenBlankState extends State<ScreenBlank> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        title: Text("ACS"),
+        title: Text("Access Control System"),
+      ),
+      body: const Center(
+        child: Text('Hello'),
       ),
     );
   }

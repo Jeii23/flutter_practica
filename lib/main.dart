@@ -1,4 +1,4 @@
-import 'screen_blank.dart';
+import 'screen_partition.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         ),
         // see https://docs.flutter.dev/cookbook/design/themes
       ),
-      home: const ScreenBlank(),
+      home: const ScreenPartition(),
     );
   }
 }
