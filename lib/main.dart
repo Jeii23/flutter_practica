@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
         // see https://docs.flutter.dev/cookbook/design/themes
       ),
-      home: const ScreenPartition(id: "ROOT"),  // TODO: this is ugly, the code depends on the particular tree
+      home: const ScreenPartition(id: "ROOT"),
     );
   }
 }

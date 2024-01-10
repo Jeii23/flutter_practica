@@ -3,6 +3,8 @@ import 'screen_partition.dart';
 import 'the_drawer.dart';
 import 'tree.dart';
 import 'requests.dart';
+import 'dart:async';
+
 class ScreenSpace extends StatefulWidget {
   final String id;
 
@@ -14,20 +16,58 @@ class ScreenSpace extends StatefulWidget {
 
 class _StateScreenSpace extends State<ScreenSpace> {
   late Future<Tree> futureTree;
+  Timer? _timer;  // Añade esta línea
 
   @override
   void initState() {
     super.initState();
     futureTree = getTree(widget.id);
+    _activateTimer();
   }
 
+  void _activateTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        futureTree = getTree(widget.id);
+      });
+    });
+  }
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   Widget _buildRow(Door door, int index) {
     return ListTile(
-      title: Text('D ${door.id}'),
-      trailing: Text('${door.state}, closed=${door.closed}'),
+      leading: Icon(Icons.door_front_door),
+      title: Text('${door.id}'),
+      subtitle: Row(
+        children: <Widget>[
+          Icon(door.state == "locked" ? Icons.lock : Icons.lock_open),
+          Switch(
+            value: door.state == "locked",
+            onChanged: (bool value) {
+              String action = value ? "lock" : "unlock";
+              updateDoorState(door.id, action);
+              // Aquí puedes actualizar el estado de la puerta en tu aplicación
+            },
+          ),
+          Icon(door.closed ? Icons.close : Icons.task_alt),
+          Switch(
+            value: door.closed,
+            onChanged: (bool value) {
+              String action = value ? "close" : "open";
+              updateDoorState(door.id, action);
+              // Aquí puedes actualizar el estado de la puerta en tu aplicación
+            },
+          ),
+        ],
+      ),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +77,6 @@ class _StateScreenSpace extends State<ScreenSpace> {
         // anonymous function
         if (snapshot.hasData) {
           return Scaffold(
-            drawer: TheDrawer(context).drawer,
             appBar: AppBar(
               backgroundColor: Theme
                   .of(context)
@@ -49,10 +88,16 @@ class _StateScreenSpace extends State<ScreenSpace> {
                   .onPrimary,
               title: Text(snapshot.data!.root.id),
               actions: <Widget>[
-                IconButton(icon: const Icon(Icons.home), onPressed: () {Navigator.of(context)
-                    .push(MaterialPageRoute<void>(
-                    builder: (context) => ScreenPartition(id: "building")));
-                }
+                IconButton(
+                    icon: const Icon(Icons.home),
+                    onPressed: () {
+                      while(Navigator.of(context).canPop()) {
+                        Navigator.of(context).pop();
+                      }
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (context) => ScreenPartition(id: "ROOT")
+                      ));
+                    }
                 ),
                 //TODO other actions
               ],

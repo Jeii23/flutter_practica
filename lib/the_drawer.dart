@@ -24,7 +24,7 @@ class TheDrawer {
             onTap: () {
               Navigator.of(context).pop(); // close drawer
               Navigator.of(context).push(MaterialPageRoute<void>(
-                builder: (context) => ScreenPartition(id: "building")));
+                builder: (context) => ScreenPartition(id: "ROOT")));
             },          ),
           ListTile(
             leading: const Icon(Icons.group),

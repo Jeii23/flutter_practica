@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert' as convert;
 
 import 'tree.dart';
@@ -20,5 +21,17 @@ Future<Tree> getTree(String areaId) async {
     // If the server did not return a 200 OK response, then throw an exception.
     print("statusCode=$response.statusCode");
     throw Exception('failed to get answer to request $uri');
+  }
+}
+Future<void> updateDoorState(String doorId, String action) async {
+  // Reemplaza esta URL con la URL de tu servidor
+  const String BASE_URL = "http://localhost:8080";
+  String now = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+  Uri uri = Uri.parse("${BASE_URL}/reader?credential=11343&action=$action&datetime=2024-01-09T09:30&doorId=$doorId");
+  final response = await http.get(uri);
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to update door state');
   }
 }
