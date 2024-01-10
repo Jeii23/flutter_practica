@@ -1,8 +1,33 @@
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert' as convert;
-
 import 'tree.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
+
+class Utils {
+  static final DateFormat _dateFormatter = DateFormat("yyyy-MM-dd");
+  static final DateFormat _timeFormatter = DateFormat("HH:mm");
+
+  static String formattedDate(date) {
+    return _dateFormatter.format(date);
+  }
+
+  static String formattedTime(time) {
+    return  _timeFormatter.format(
+        DateTime(1, 1, 1, time.hour, time.minute));
+  }
+
+  static String formattedDateTime(date, time) {
+    return "${formattedDate(date)}T${formattedTime(time)}";
+  }
+}
+
+void main() {
+  DateTime date = DateTime.now();
+  TimeOfDay time = TimeOfDay.now();
+  print(Utils.formattedDateTime(date, time));
+}
 
 Future<Tree> getTree(String areaId) async {
   const String BASE_URL = "http://localhost:8080";
@@ -26,9 +51,11 @@ Future<Tree> getTree(String areaId) async {
 Future<void> updateDoorState(String doorId, String action) async {
   // Reemplaza esta URL con la URL de tu servidor
   const String BASE_URL = "http://localhost:8080";
-  String now = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+  DateTime date = DateTime.now();
+  TimeOfDay time = TimeOfDay.now();
+  String now = Utils.formattedDateTime(date, time);
 
-  Uri uri = Uri.parse("${BASE_URL}/reader?credential=11343&action=$action&datetime=2024-01-09T09:30&doorId=$doorId");
+  Uri uri = Uri.parse("${BASE_URL}/reader?credential=11343&action=$action&datetime=$now&doorId=$doorId");
   final response = await http.get(uri);
 
   if (response.statusCode != 200) {

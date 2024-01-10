@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'screen_partition.dart';
-import 'the_drawer.dart';
 import 'tree.dart';
 import 'requests.dart';
 import 'dart:async';
@@ -44,7 +44,7 @@ class _StateScreenSpace extends State<ScreenSpace> {
       title: Text('${door.id}'),
       subtitle: Row(
         children: <Widget>[
-          Icon(door.state == "locked" ? Icons.lock : Icons.lock_open),
+          Icon(door.state == "locked" ? Icons.lock_outline : Icons.lock_open),
           Switch(
             value: door.state == "locked",
             onChanged: (bool value) {
@@ -53,7 +53,7 @@ class _StateScreenSpace extends State<ScreenSpace> {
               // Aquí puedes actualizar el estado de la puerta en tu aplicación
             },
           ),
-          Icon(door.closed ? Icons.close : Icons.task_alt),
+          Icon(door.closed ? Symbols.door_front_door :  Symbols.door_open),
           Switch(
             value: door.closed,
             onChanged: (bool value) {

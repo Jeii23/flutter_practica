@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'screen_space.dart';
 import 'the_drawer.dart';
 import 'tree.dart';
@@ -26,7 +27,7 @@ class _ScreenPartitionState extends State<ScreenPartition> {
     assert (area is Partition || area is Space);
     if (area is Partition) {
       return ListTile(
-        leading: Icon(Icons.house_siding),
+        leading: Icon(Symbols.nest_multi_room),
         title: Text(' ${area.id}'),
         onTap: () => _navigateDownPartition(area.id),
       );
